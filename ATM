@@ -1,0 +1,21 @@
+print(" Welcome to JJ-Banking ")
+
+Attempts= 3
+UserPin = 6789
+while Attempts !=0:
+    Pin = int(input(" Please enter your 4 digit pin number "))
+    if  Pin != UserPin:
+        Attempts -= 1
+        print("wrong pin number, you have", Attempts, "Attempts left")
+    else:
+        UserChoice = input("d: Deposit or w: Withdraw: ")
+        if UserChoice == "d":
+            UserDeposit = input("Enter the amount you would like to deposit: ")
+            print(UserDeposit, "$ Have been Deposited into you account")
+        if UserChoice == "w":
+            UserWithdraw = input("Enter the amount you would like to withdraw: ")
+            print(UserWithdraw, "$ Have been Withdrawn from you account")
+        UserExit = input("Would you like to continue? Y/N: ")
+        if UserExit == "N":
+            print("Thank you for using JJ-Banking")
+        break
