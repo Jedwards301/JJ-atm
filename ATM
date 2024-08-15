@@ -1,21 +1,112 @@
-print(" Welcome to JJ-Banking ")
+class Atm:
+    def __init__(self):
+        self.__pin = "1234"
+        self.__balance = 100000
+        self.__menu()
 
-Attempts= 3
-UserPin = 6789
-while Attempts !=0:
-    Pin = int(input(" Please enter your 4 digit pin number "))
-    if  Pin != UserPin:
-        Attempts -= 1
-        print("wrong pin number, you have", Attempts, "Attempts left")
-    else:
-        UserChoice = input("d: Deposit or w: Withdraw: ")
-        if UserChoice == "d":
-            UserDeposit = input("Enter the amount you would like to deposit: ")
-            print(UserDeposit, "$ Have been Deposited into you account")
-        if UserChoice == "w":
-            UserWithdraw = input("Enter the amount you would like to withdraw: ")
-            print(UserWithdraw, "$ Have been Withdrawn from you account")
-        UserExit = input("Would you like to continue? Y/N: ")
-        if UserExit == "N":
-            print("Thank you for using JJ-Banking")
-        break
+    def __menu(self):
+        while True:
+            print("\nWelcome to JJ-ATM")
+            print("1. Generate PIN")
+            print("2. Change PIN")
+            print("3. Check Balance")
+            print("4. Withdraw")
+            print("5. Deposit")
+            print("6. Exit")
+
+            choice = input("Choose a service for: ")
+            print(f"User chose: {choice}")
+
+            if choice == '1':
+                self.__generate_pin()
+            elif choice == '2':
+                self.__change_pin()
+            elif choice == '3':
+                self.__check_balance()
+            elif choice == '4':
+                self.__withdraw()
+            elif choice == '5':
+                self.__deposit()
+            elif choice == '6':
+                print("Thank you for using the JJ-ATM.")
+                break
+            else:
+                print("Please try again.")
+
+    def __get_pin(self):
+        pin = input("Enter a 4-digit PIN: ")
+        if len(pin) == 4 and pin.isdigit():
+            return pin
+        else:
+            print("Invalid PIN.")
+            return None
+
+    def __verify_pin(self):
+        print(f"Stored PIN: {self.__pin}")
+        pin = input("Enter your current PIN: ")
+        if pin == self.__pin:
+            return True
+        else:
+            print("Incorrect PIN.")
+            return False
+
+    def __generate_pin(self):
+        if self.__pin != "1234":
+            print("PIN is already set. Change PIN for a new one.")
+            return
+
+        pin = self.__get_pin()
+        if pin:
+            confirm_pin = input("Confirm 4-digit PIN: ")
+            if pin == confirm_pin:
+                self.__pin = pin
+                print("PIN generated successfully.")
+            else:
+                print("PINs don't match. Please try again.")
+
+    def __change_pin(self):
+        if not self.__verify_pin():
+            return
+
+        new_pin = self.__get_pin()
+        if new_pin:
+            confirm_pin = input("Confirm new 4-digit PIN: ")
+            if new_pin == confirm_pin:
+                self.__pin = new_pin
+                print("PIN changed successfully.")
+            else:
+                print("PINs don't match. Please try again.")
+
+    def __check_balance(self):
+        if self.__verify_pin():
+            print(f"Your current balance is: ${self.__balance}")
+
+    def __withdraw(self):
+        if not self.__verify_pin():
+            return
+
+        try:
+            amount = int(input("Enter amount to withdraw (multiples of 100): "))
+            if amount % 100 == 0 and amount <= self.__balance:
+                self.__balance -= amount
+                print(f"Withdrawal successful. Your new balance is: ${self.__balance}")
+            else:
+                print("Invalid amount.")
+        except ValueError:
+            print("Please enter a valid amount.")
+
+    def __deposit(self):
+        if not self.__verify_pin():
+            return
+
+        try:
+            amount = int(input("Enter amount to deposit (multiples of 100): "))
+            if amount % 100 == 0 and amount > 0:
+                self.__balance += amount
+                print(f"Deposit successful. Your new balance is: ${self.__balance}")
+            else:
+                print("Ensure a valid amount, multiple's of 100.")
+        except ValueError:
+            print("Please enter a valid amount.")
+
+atm = Atm()
